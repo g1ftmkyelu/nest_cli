@@ -16,7 +16,7 @@
 To install `nest_cli` globally on your system, use npm:
 
 ```bash
-npm install -g nest_cli
+npm install -g  @giftmk/nest_cli
 ```
 
 ## Usage 💻
