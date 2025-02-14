@@ -11,7 +11,6 @@ const __dirname = dirname(__filename);
 
 // Function to get directory tree
 async function generateTree(dir, prefix = '') {
-    console.log(`Generating tree for directory: ${dir}`);
     const items = await fs.readdir(dir);
     let result = '';
 
@@ -36,7 +35,6 @@ async function generateTree(dir, prefix = '') {
 
 // Function to read file content with line numbers
 async function readFileContent(filePath) {
-    console.log(`Reading file content: ${filePath}`);
     const content = await fs.readFile(filePath, 'utf-8');
     const lines = content.split('\n');
 
@@ -48,7 +46,6 @@ async function readFileContent(filePath) {
 
 // Function to format file display
 async function formatFileDisplay(filePath) {
-    console.log(`Formatting file display for: ${filePath}`);
     const relativePath = path.relative(process.cwd(), filePath);
     const separator = '-'.repeat(80);
 
@@ -68,7 +65,6 @@ async function formatFileDisplay(filePath) {
 
 // Main function to process directory
 async function processDirectory(directory) {
-    console.log(`Processing directory: ${directory}`);
     try {
         // Display directory tree
         const tree = await generateTree(directory);
@@ -76,7 +72,6 @@ async function processDirectory(directory) {
 
         // Process all files recursively
         async function processFiles(dir) {
-            console.log(`Processing files in directory: ${dir}`);
             const items = await fs.readdir(dir);
 
             for (const item of items) {
@@ -109,7 +104,6 @@ program
     .version('1.0.0')
     .argument('[directory]', 'Directory to process', '.')
     .action(async (directory) => {
-        console.log(`CLI action triggered with directory: ${directory}`);
         await processDirectory(path.resolve(directory));
     });
 
