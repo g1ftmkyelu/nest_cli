@@ -1,0 +1,34 @@
+{
+  "name": "@giftmk/nest_cli",
+  "version": "1.0.0",
+  "private": false,
+  "description": "CLI tool to display codebase in a structured format",
+  "keywords": [
+    "cli",
+    "tree",
+    "directory",
+    "file",
+    "display",
+    "structure"
+
+  ],
+  "homepage": "https://github.com/g1ftmkyelu/nest_cli#readme",
+  "bugs": {
+    "url": "https://github.com/g1ftmkyelu/nest_cli/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/g1ftmkyelu/nest_cli.git"
+  },
+  "license": "MIT",
+  "author": "gift mkyelu",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0"
+  }
+}
