@@ -10,7 +10,6 @@
     "file",
     "display",
     "structure"
-
   ],
   "homepage": "https://github.com/g1ftmkyelu/nest_cli#readme",
   "bugs": {
@@ -24,6 +23,9 @@
   "author": "gift mkyelu",
   "type": "module",
   "main": "index.js",
+  "bin": {
+    "nest_cli": "index.js"
+  },
   "scripts": {
     "start": "node index.js"
   },
