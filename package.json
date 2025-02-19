@@ -1,6 +1,6 @@
 {
   "name": "@giftmk/nest_cli",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "private": false,
   "description": "CLI tool to display codebase in a structured format",
   "keywords": [
