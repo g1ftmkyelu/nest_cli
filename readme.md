@@ -25,12 +25,12 @@ You can install **NestCLI** globally using either **npm** or **Yarn**.
 
 ### Using npm:
 ```bash
-npm install -g nest-cli
+npm install -g @giftmk/nest_cli
 ```
 
 ### Using Yarn:
 ```bash
-yarn global add nest-cli
+yarn global add @giftmk/nest_cli
 ```
 
 ---
