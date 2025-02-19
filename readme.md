@@ -138,6 +138,7 @@ We welcome contributions! Follow these steps to get started:
 
 **Useful Links:**
 - [Docs](https://nestcli-docs.vercel.app/docs/intro)
+- [NPM](https://www.npmjs.com/package/@giftmk/nest_cli)
 - [GitHub Repository](https://github.com/g1ftmkyelu/nest-cli)
 - [Issue Tracker](https://github.com/g1ftmkyelu/nest-cli/issues)
 - [Pull Requests](https://github.com/g1ftmkyelu/nest-cli/pulls)
