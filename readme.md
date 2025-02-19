@@ -1,6 +1,3 @@
-Here's an improved version of your README with a clear structure, better formatting, and the added Yarn installation command:
-
----
 
 # 🚀 **NestCLI - The Ultimate Codebase Explorer**
 
