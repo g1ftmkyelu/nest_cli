@@ -137,7 +137,7 @@ We welcome contributions! Follow these steps to get started:
 5. 🎯 Open a Pull Request
 
 **Useful Links:**
-- [Docs] (https://nestcli-docs.vercel.app/docs/intro)
+- [Docs](https://nestcli-docs.vercel.app/docs/intro)
 - [GitHub Repository](https://github.com/g1ftmkyelu/nest-cli)
 - [Issue Tracker](https://github.com/g1ftmkyelu/nest-cli/issues)
 - [Pull Requests](https://github.com/g1ftmkyelu/nest-cli/pulls)
