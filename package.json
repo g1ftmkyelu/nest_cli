@@ -31,6 +31,9 @@
   },
   "dependencies": {
     "chalk": "^5.4.1",
-    "commander": "^13.1.0"
+    "cli-highlight": "^2.1.11",
+    "commander": "^13.1.0",
+    "highlight.js": "^11.11.1",
+    "keypress": "^0.2.1"
   }
 }
