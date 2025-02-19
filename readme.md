@@ -68,7 +68,7 @@ nest_cli [options] [directory]
 
 ### 📂 **Display Directory Structure**
 ```bash
-nest_cli .
+nest_cli -t
 ```
 **Output:**
 ```
