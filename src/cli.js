@@ -54,12 +54,22 @@ async function setupCLI() {
                     console.log(chalk.green('Configuration reset to defaults!'));
                 }
 
-                // Register plugins
-                pluginManager.register('tree', new TreePlugin(finalOptions));
-                pluginManager.register('search', new SearchPlugin(finalOptions));
-                pluginManager.register('display', new DisplayPlugin(finalOptions));
-                pluginManager.register('highlight', new HighlightPlugin(finalOptions));
-                pluginManager.register('navigation', new NavigationPlugin(finalOptions));
+               // Create plugin instances
+               const highlightPlugin = new HighlightPlugin(finalOptions);
+               const displayPlugin = new DisplayPlugin(finalOptions);
+               const treePlugin = new TreePlugin(finalOptions);
+               const searchPlugin = new SearchPlugin(finalOptions);
+               const navigationPlugin = new NavigationPlugin(finalOptions);
+       
+               // Set up plugin dependencies
+               displayPlugin.setHighlightPlugin(highlightPlugin);
+       
+               // Register plugins
+               pluginManager.register('highlight', highlightPlugin);
+               pluginManager.register('display', displayPlugin);
+               pluginManager.register('tree', treePlugin);
+               pluginManager.register('search', searchPlugin);
+               pluginManager.register('navigation', navigationPlugin);
 
                 // Process directory
                 await pluginManager.processDirectory(path.resolve(directory), finalOptions);
