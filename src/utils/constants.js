@@ -11,7 +11,7 @@ export const MEDIA_EXTENSIONS = new Set([
 
 export const DEFAULT_OPTIONS = {
     depth: Infinity,
-    lineLimit: 200,
+    lineLimit: 1000,
     syntaxHighlight: false,
     lineNumbers: false,
     hidden: false,

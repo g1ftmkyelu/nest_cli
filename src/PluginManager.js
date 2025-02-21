@@ -78,45 +78,46 @@ export class PluginManager {
         }
     }
 
-    async processDirectory(directory, options) {
-        try {
-            await this.initializeAll();
+// In PluginManager.js, update the processDirectory method
+async processDirectory(directory, options) {
+    try {
+        await this.initializeAll();
 
-            // Collect files first
-            this.files = await collectFiles(directory, options);
-            
-            // If search is active, filter files first
-            const searchPlugin = this.get('search');
-            if (searchPlugin && options.search) {
-                this.files = await searchPlugin.filterFiles(this.files);
-            }
-
-            // Execute tree plugin
-            const treePlugin = this.get('tree');
-            await treePlugin.execute(directory);
-
-            if (options.treeOnly) {
-                await this.cleanupAll();
-                return;
-            }
-
-            // Setup navigation
-            const navigator = new FileNavigator(this.files);
-            const navigationPlugin = this.get('navigation');
-            navigationPlugin.setupNavigation(navigator, this.displayFile.bind(this));
-
-            // Display files if there are any matches
-            if (this.files.length > 0) {
-                await this.displayFile(this.files[0]);
-            } else if (options.search) {
-                console.log(chalk.yellow('\nNo files found matching the search criteria.'));
-                await this.cleanupAll();
-            }
-
-        } catch (error) {
-            console.error(chalk.red(`❌ Error: ${error.message}`));
-            await this.cleanupAll();
-            process.exit(1);
+        // Collect files first
+        this.files = await collectFiles(directory, options);
+        
+        // If search is active, filter files first
+        const searchPlugin = this.get('search');
+        if (searchPlugin && options.search) {
+            await searchPlugin.filterFiles(this.files);
         }
+
+        // Execute tree plugin after search has collected matches
+        const treePlugin = this.get('tree');
+        await treePlugin.execute(directory);
+
+        if (options.treeOnly) {
+            await this.cleanupAll();
+            return;
+        }
+
+        // Setup navigation
+        const navigator = new FileNavigator(this.files);
+        const navigationPlugin = this.get('navigation');
+        navigationPlugin.setupNavigation(navigator, this.displayFile.bind(this));
+
+        // Display files if there are any matches
+        if (this.files.length > 0) {
+            await this.displayFile(this.files[0]);
+        } else if (options.search) {
+            console.log(chalk.yellow('\nNo files found matching the search criteria.'));
+            await this.cleanupAll();
+        }
+
+    } catch (error) {
+        console.error(chalk.red(`❌ Error: ${error.message}`));
+        await this.cleanupAll();
+        process.exit(1);
     }
+}
 }

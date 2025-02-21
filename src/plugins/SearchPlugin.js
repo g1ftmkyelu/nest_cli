@@ -1,3 +1,4 @@
+// SearchPlugin.js
 import { BasePlugin } from '../core/BasePlugin.js';
 import chalk from 'chalk';
 import path from 'path';
@@ -18,56 +19,18 @@ export class SearchPlugin extends BasePlugin {
 
         try {
             const content = await fs.readFile(filePath, 'utf-8');
-            const searchTerm = this.options.search;
+            const searchTerm = this.options.search.toLowerCase();
+            const fileName = path.basename(filePath).toLowerCase();
             
-            const searchPattern = this.options.regex ?
-                new RegExp(searchTerm, 'gi') :
-                new RegExp(searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
-
-            if (content.match(searchPattern)) {
+            // Check if the file name matches the search term or content contains the term
+            if (fileName.includes(searchTerm) || content.toLowerCase().includes(searchTerm)) {
                 this.matchedFiles.add(filePath);
                 const relativePath = filePath.split('src/')[1] || filePath;
                 
-                // Print file header
                 console.log(chalk.cyan(`\n📄 Found in ${relativePath}:`));
                 
-                // Get relevant code snippet
-                const lines = content.split('\n');
-                let snippetStart = null;
-                let snippetEnd = null;
-
-                // Find the class or function definition containing the match
-                for (let i = 0; i < lines.length; i++) {
-                    if (lines[i].includes('class') || lines[i].includes('function')) {
-                        snippetStart = i;
-                        // Find the closing brace
-                        let braceCount = 1;
-                        for (let j = i + 1; j < lines.length; j++) {
-                            if (lines[j].includes('{')) braceCount++;
-                            if (lines[j].includes('}')) braceCount--;
-                            if (braceCount === 0) {
-                                snippetEnd = j + 1;
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-
-                if (snippetStart !== null && snippetEnd !== null) {
-                    // Extract and format the relevant code section
-                    const codeSnippet = lines
-                        .slice(snippetStart, snippetEnd)
-                        .map(line => {
-                            if (line.match(searchPattern)) {
-                                return chalk.yellow(line.replace(searchPattern, match => chalk.bold(match)));
-                            }
-                            return line;
-                        })
-                        .join('\n');
-
-                    return codeSnippet;
-                }
+                // Return the entire file content
+                return content;
             }
         } catch (error) {
             console.error(chalk.red(`Error reading file ${filePath}: ${error.message}`));
@@ -79,9 +42,23 @@ export class SearchPlugin extends BasePlugin {
         if (!this.options.search) return files;
         
         const matchedFiles = [];
+        const searchTerm = this.options.search.toLowerCase();
+
         for (const file of files) {
-            if (await this.searchInFile(file)) {
-                matchedFiles.push(file);
+            try {
+                // Add the full path to matchedFiles for tree highlighting
+                const fileName = path.basename(file).toLowerCase();
+                const relativePath = file.split('src/')[1] || file;
+                const content = await fs.readFile(file, 'utf-8');
+
+                if (fileName.includes(searchTerm) || 
+                    relativePath.toLowerCase().includes(searchTerm) ||
+                    content.toLowerCase().includes(searchTerm)) {
+                    matchedFiles.push(file);
+                    this.matchedFiles.add(file); // Make sure to add the full path
+                }
+            } catch (error) {
+                console.error(chalk.red(`Error processing file ${file}: ${error.message}`));
             }
         }
         return matchedFiles;
