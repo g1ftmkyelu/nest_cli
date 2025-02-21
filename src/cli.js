@@ -23,7 +23,7 @@ async function setupCLI() {
     program
         .name('nest_cli')
         .description('Enhanced CLI tool to display a structured view of a codebase')
-        .version('1.2.0')
+        .version('1.0.9')
         .argument('[directory]', 'Directory to process', '.')
         .option('-d, --depth <level>', 'Limit directory tree depth', parseInt)
         .option('-e, --extensions <ext>', 'Filter files by extensions (comma-separated)')
@@ -54,25 +54,37 @@ async function setupCLI() {
                     console.log(chalk.green('Configuration reset to defaults!'));
                 }
 
-               // Create plugin instances
-               const highlightPlugin = new HighlightPlugin(finalOptions);
-               const displayPlugin = new DisplayPlugin(finalOptions);
-               const treePlugin = new TreePlugin(finalOptions);
-               const searchPlugin = new SearchPlugin(finalOptions);
-               const navigationPlugin = new NavigationPlugin(finalOptions);
-       
-               // Set up plugin dependencies
-               displayPlugin.setHighlightPlugin(highlightPlugin);
-       
-               // Register plugins
-               pluginManager.register('highlight', highlightPlugin);
-               pluginManager.register('display', displayPlugin);
-               pluginManager.register('tree', treePlugin);
-               pluginManager.register('search', searchPlugin);
-               pluginManager.register('navigation', navigationPlugin);
+// Create plugin instances
+const highlightPlugin = new HighlightPlugin(finalOptions);
+const displayPlugin = new DisplayPlugin(finalOptions);
+const searchPlugin = new SearchPlugin(finalOptions);
+const treePlugin = new TreePlugin(finalOptions);
+const navigationPlugin = new NavigationPlugin(finalOptions);
 
-                // Process directory
-                await pluginManager.processDirectory(path.resolve(directory), finalOptions);
+// Set up plugin dependencies
+displayPlugin.setHighlightPlugin(highlightPlugin);
+treePlugin.setSearchPlugin(searchPlugin);
+
+// Initialize plugins with any additional setup
+if (finalOptions.search) {
+    searchPlugin.clearMatchedFiles();  // Reset matched files for new search
+}
+
+// Register plugins in search-first order to ensure matches are found before tree generation
+pluginManager.register('search', searchPlugin);    // Search first to collect matches
+pluginManager.register('tree', treePlugin);       // Tree next to show highlighted paths
+pluginManager.register('highlight', highlightPlugin);
+pluginManager.register('display', displayPlugin);
+pluginManager.register('navigation', navigationPlugin);
+
+// Process directory
+const resolvedDirectory = path.resolve(directory);
+await pluginManager.processDirectory(resolvedDirectory, finalOptions);
+
+// Clear search results after processing
+if (finalOptions.search) {
+    searchPlugin.clearMatchedFiles();
+}
 
             } catch (error) {
                 console.error(chalk.red(`❌ Error: ${error.message}`));

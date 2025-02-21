@@ -1,3 +1,4 @@
+// TreePlugin.js
 import fs from 'fs/promises';
 import path from 'path';
 import chalk from 'chalk';
@@ -5,9 +6,18 @@ import { BasePlugin } from '../core/BasePlugin.js';
 import { EXCLUDED_DIRS } from '../utils/constants.js';
 
 export class TreePlugin extends BasePlugin {
+    constructor(options) {
+        super(options);
+        this.searchPlugin = null;
+    }
+
+    setSearchPlugin(searchPlugin) {
+        this.searchPlugin = searchPlugin;
+    }
+
     async generateTree(dir, prefix = '', depth = Infinity, currentDepth = 0) {
         if (currentDepth >= depth) return '';
-
+        
         let items;
         try {
             items = await fs.readdir(dir);
@@ -25,15 +35,23 @@ export class TreePlugin extends BasePlugin {
             if (!this.options.hidden && item.startsWith('.')) continue;
 
             const isLast = i === items.length - 1;
-            let display = `${prefix}${isLast ? '└── ' : '├── '}${item}`;
-            if (this.options.size) display += ` (${stats.size} bytes)`;
+            const isMatched = this.searchPlugin?.getMatchedFiles().has(itemPath);
+
+            // Highlight matched files/directories
+            let displayItem = isMatched ? chalk.yellow.bold(item) : item;
+            let display = `${prefix}${isLast ? '└── ' : '├── '}${displayItem}`;
+            
+            if (this.options.size) {
+                display += ` (${stats.size} bytes)`;
+            }
+
             result += display + '\n';
 
             if (stats.isDirectory()) {
                 result += await this.generateTree(
-                    itemPath, 
-                    prefix + (isLast ? '    ' : '│   '), 
-                    depth, 
+                    itemPath,
+                    prefix + (isLast ? '    ' : '│   '),
+                    depth,
                     currentDepth + 1
                 );
             }
@@ -43,7 +61,6 @@ export class TreePlugin extends BasePlugin {
 
     async execute(directory) {
         if (this.options.fileOnly) return;
-        
         const tree = await this.generateTree(directory, '', this.options.depth);
         console.log(chalk.green(`\n📁 Directory Tree:\n`) + tree);
     }

@@ -1,19 +1,58 @@
 {
   "name": "@giftmk/nest_cli",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "private": false,
   "description": "CLI tool to display codebase in a structured format",
   "keywords": [
     "cli",
     "tree",
+    "directory tree",
+    "file explorer",
     "directory",
     "file",
     "display",
-    "structure"
+    "structure",
+    "codebase",
+    "navigation",
+    "search",
+    "nest_cli",
+    "command-line-tool",
+    "code-explorer",
+    "codebase-explorer",
+    "code-explorer-cli",
+    "filesystem",
+    "terminal",
+    "command-line",
+    "folder-structure",
+    "recursive",
+    "tree-view",
+    "nested-files",
+    "directory-navigation",
+    "project-structure",
+    "file-hierarchy",
+    "text-based-ui",
+    "cli-tool",
+    "dev-tool",
+    "file-organization",
+    "source-code-navigation",
+    "code-structure",
+    "open-source",
+    "cross-platform",
+    "lightweight",
+    "developer-tool",
+    "automation",
+    "shell-tool",
+    "file-system-explorer",
+    "node-cli"
   ],
-  "homepage": "https://github.com/g1ftmkyelu/nest_cli#readme",
+  "engines": {
+  "node": ">=14.0.0"
+},
+  "homepage": "https://nestcli-docs.vercel.app",
+  "preferGlobal": true,
   "bugs": {
-    "url": "https://github.com/g1ftmkyelu/nest_cli/issues"
+    "url": "https://github.com/g1ftmkyelu/nest_cli/issues",
+    "email": "mkyelugift@gmail.com"
   },
   "repository": {
     "type": "git",
@@ -29,6 +68,8 @@
   "scripts": {
     "start": "node index.js"
   },
+  "os": ["darwin", "linux", "win32"],
+"cpu": ["x64", "ia32", "arm64"],
   "dependencies": {
     "chalk": "^5.4.1",
     "cli-highlight": "^2.1.11",
